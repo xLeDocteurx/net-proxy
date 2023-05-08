@@ -4,4 +4,4 @@ def parse(data, port, origin):
         return
     if origin == 'server':
         return
-    print("[{}({})] {}").format(origin, port, data.encode('hex'))
+    print("[{}({})] {}".format(origin, port, data.encode('hex')))
