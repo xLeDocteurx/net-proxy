@@ -1,5 +1,7 @@
 import socket
+import os
 from threading import Thread
+import parser_test as parser
 
 
 class Proxy2Server(Thread):
@@ -12,15 +14,19 @@ class Proxy2Server(Thread):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.connect((host, port))
 
-    # run un thread
+    # run in thread
     def run(self):
         while True:
             data = self.server.recv(4096)
             if data:
-                print("[{}] <- {}".format(self.port, data[:100].hex()))
+                # print("[{}] <- {}".format(self.port, data[:100].hex()))
+                try:
+                    reload(parser)
+                    parser.parse(data, self.port, 'server')
+                except Exception as e:
+                    print('server[{}]'.format(self.port), e)
                 # forward to client
                 self.game.sendall(data)
-
 
 class Game2Proxy(Thread):
 
@@ -40,7 +46,12 @@ class Game2Proxy(Thread):
         while True:
             data = self.game.recv(4096)
             if data:
-                print("[{}] -> {}".format(self.port, data[:100].hex()))
+                # print("[{}] -> {}".format(self.port, data[:100].hex()))
+                try:
+                    reload(parser)
+                    parser.parse(data, self.port, 'client')
+                except Exception as e:
+                    print('client[{}]'.format(self.port), e)
                 # forward to server
                 self.server.sendall(data)
 
@@ -76,3 +87,5 @@ master_server.start()
 # for port in range(3000, 3006):
 #     _game_server = Proxy('0.0.0.0', '192.168.178.54', port)
 #     _game_server.start()
+
+
