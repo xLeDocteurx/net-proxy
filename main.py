@@ -21,7 +21,7 @@ class Proxy2Server(Thread):
             if data:
                 # print("[{}] <- {}".format(self.port, data[:100].hex()))
                 try:
-                    reload(parser)
+                    # reload(parser)
                     parser.parse(data, self.port, 'server')
                 except Exception as e:
                     print('server[{}]'.format(self.port), e)
@@ -48,7 +48,7 @@ class Game2Proxy(Thread):
             if data:
                 # print("[{}] -> {}".format(self.port, data[:100].hex()))
                 try:
-                    reload(parser)
+                    # reload(parser)
                     parser.parse(data, self.port, 'client')
                 except Exception as e:
                     print('client[{}]'.format(self.port), e)
