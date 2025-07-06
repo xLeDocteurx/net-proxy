@@ -19,12 +19,12 @@ class Proxy2Server(Thread):
         while True:
             data = self.server.recv(4096)
             if data:
-                # print("[{}] <- {}".format(self.port, data[:100].hex()))
-                try:
-                    # reload(parser)
-                    parser.parse(data, self.port, 'server')
-                except Exception as e:
-                    print('server[{}]'.format(self.port), e)
+                print("[{}] <- {}".format(self.port, data[:100].hex()))
+                # try:
+                #     # reload(parser)
+                #     parser.parse(data, self.port, 'server')
+                # except Exception as e:
+                #     print('server[{}]'.format(self.port), e)
                 # forward to client
                 self.game.sendall(data)
 
@@ -46,12 +46,12 @@ class Game2Proxy(Thread):
         while True:
             data = self.game.recv(4096)
             if data:
-                # print("[{}] -> {}".format(self.port, data[:100].hex()))
-                try:
-                    # reload(parser)
-                    parser.parse(data, self.port, 'client')
-                except Exception as e:
-                    print('client[{}]'.format(self.port), e)
+                print("[{}] -> {}".format(self.port, data[:100].hex()))
+                # try:
+                #     # reload(parser)
+                #     parser.parse(data, self.port, 'client')
+                # except Exception as e:
+                #     print('client[{}]'.format(self.port), e)
                 # forward to server
                 self.server.sendall(data)
 
